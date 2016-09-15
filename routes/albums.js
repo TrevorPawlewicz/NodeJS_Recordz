@@ -82,7 +82,20 @@ router.post('/add', upload.single('cover'), function(req, res, next){
     res.redirect('/albums');
 });
 
+//
+router.get('/details/:id', function(req, res){
+    var id = req.params.id;
+    console.log("-----> id = " + id);
+    // new Firebase reference:
+    var albumRef = new Firebase('https://recordz.firebaseio.com/albums/' + id);
+    console.log("albumRef = " + albumRef);
 
+    albumRef.once('value', function(snapshot){
+
+        var album = snapshot.val();
+        res.render('albums/details', {album: album, id: id});
+    });
+});
 
 
 
