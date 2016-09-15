@@ -14,15 +14,11 @@ router.get('/', function(req, res, next){
             var myKey = childSnapshot.key();
             var childData = childSnapshot.val();
 
-
-
-
             myGenre.push({
                 id: myKey,
                 name: childData.name
             });
         });
-
         res.render('genres/index.ejs', {genres: myGenre});
     });
 });

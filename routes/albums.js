@@ -7,7 +7,28 @@ var upload   = multer({dest:'./public/images/uploads'});
 
 // Home page:
 router.get('/', function(req, res, next){
-    res.render('albums/index.ejs');
+    var albumRef = fbRef.child('albums');
+
+    albumRef.once('value', function(snapshot){
+        var myAlbum = [];
+
+        snapshot.forEach(function(childSnapshot){
+            var myKey = childSnapshot.key();
+            var childData = childSnapshot.val();
+
+            myAlbum.push({
+                id: myKey,
+                artist: childData.artist,
+                genre: childData.genre,
+                info: childData.info,
+                title: childData.title,
+                label: childData.label,
+                tracks: childData.tracks,
+                cover: childData.cover
+            });
+        });
+        res.render('albums/index.ejs', {albums: myAlbum});
+    });
 });
 
 router.get('/add', function(req, res, next){
@@ -28,7 +49,6 @@ router.get('/add', function(req, res, next){
                 name: childData.name
             });
         });
-
         res.render('albums/add', {genres: myData});
     });
 });
