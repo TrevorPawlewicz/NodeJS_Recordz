@@ -4,7 +4,9 @@
 
 
 <h1>albums - index.ejs
-    <a href="/albums/add" class="btn btn-success pull-right">Add Album</a>
+    <% if (authdata != null) { %>
+        <a href="/albums/add" class="btn btn-success pull-right">Add Album</a>
+    <% } %>
 </h1>
 
 

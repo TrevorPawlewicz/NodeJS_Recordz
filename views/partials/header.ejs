@@ -22,31 +22,50 @@
                 <!-- ________________________sidebar_______________________ -->
                 <div id="navbar" class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li><a href="/users/register">Register</a></li>
-                        <li><a href="/users/login">Login</a></li>
-                        <li><a href="/users/logout">Logout</a></li>
+                        <% if (authdata === null) { %>
+                            <li><a href="/users/register">Register</a></li>
+                            <li><a href="/users/login">Login</a></li>
+                        <% } else { %>
+                            <li><a href="/users/logout">Logout</a></li>
+                        <% } %>
                     </ul>
                 </div><!--/.nav-collapse -->
+                <!-- __________________RIGHT sidebar_______________________ -->
             </div>
         </nav>
 
         <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <ul class="list-group">
-                        <li class="list-group-item"><a href="/albums">View Recordz</a></li>
-                        <li class="list-group-item"><a href="/genres">View Genres</a></li>
-                    </ul>
+            <% if (authdata == null) { %>
+                <div class="row">
+                    <div class="col-md-12">
+                        <% if (page == '/') { %>
+                            <a><img src="/images/banner.jpg"></a>
+                        <% } %>
+                    </div>
                 </div>
-                <div class="col-md-9">
-                    <% if (success_msg != false) { %>
-                        <div class="alert alert-success">
-                            <%= success_msg %>
-                        </div>
-                    <% } else if (error_msg != false) { %>
-                        <div class="alert alert-danger">
-                            <%= error_msg %>
-                        </div>
-                    <% } %>
+            <% } else { %>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <% if(authdata != null){ %>
+                          <p class="well">Welcome, <%= user.first_name %> <%= user.last_name %></p>
+                        <% } %>
+
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="/albums">View Recordz</a></li>
+                            <li class="list-group-item"><a href="/genres">View Genres</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-9">
+                        <% if (success_msg != false) { %>
+                            <div class="alert alert-success">
+                                <%= success_msg %>
+                            </div>
+                        <% } else if (error_msg != false) { %>
+                            <div class="alert alert-danger">
+                                <%= error_msg %>
+                            </div>
+                        <% } %>
+            <% } %>
 
 <!-- ___________________________END OF HEADER_______________________________-->

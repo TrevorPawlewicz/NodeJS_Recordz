@@ -3,6 +3,14 @@ var router   = express.Router();
 var Firebase = require('firebase');
 var fbRef = new Firebase('https://recordz.firebaseio.com');
 
+// AUTHENTICATION on ANY Route -------------
+router.get('*', function(req, res, next){
+    // check for authentication on ANY route
+    if (fbRef.getAuth() == null) {
+        res.redirect('/users/login');
+    }
+}); //--------------------------------------
+
 // Home page:
 router.get('/', function(req, res, next){
     var genreRef = fbRef.child('genres');

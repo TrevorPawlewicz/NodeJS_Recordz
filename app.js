@@ -67,7 +67,20 @@ app.use(function(req, res, next){
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error'); // from PASSPORT error message
+    res.locals.authdata = fbRef.getAuth(); // firebase login cred
+    res.locals.page = req.url; // for splash page image
     next();
+});
+
+// Get User Info
+app.get('*', function(req, res, next){
+  if(fbRef.getAuth() != null){
+    var userRef = new Firebase('https://recordz.firebaseio.com/users/');
+    userRef.orderByChild("uid").startAt(fbRef.getAuth().uid).endAt(fbRef.getAuth().uid).on("child_added", function(snapshot) {
+      res.locals.user = snapshot.val();
+    });
+  }
+  next();
 });
 
 // Routes MIDDLEWARE:

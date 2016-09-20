@@ -5,6 +5,14 @@ var fbRef    = new Firebase('https://recordz.firebaseio.com');
 var multer   = require('multer');
 var upload   = multer({ dest: './public/images/uploads' });
 
+// AUTHENTICATION on ANY Route -------------
+router.get('*', function(req, res, next){
+    // check for authentication on ANY route
+    if (fbRef.getAuth() == null) {
+        res.redirect('/users/login');
+    }
+}); //--------------------------------------
+
 // Home page:
 router.get('/', function(req, res, next){
     var albumRef = fbRef.child('albums');
