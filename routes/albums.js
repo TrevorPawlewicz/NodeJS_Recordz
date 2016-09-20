@@ -53,6 +53,7 @@ router.get('/add', function(req, res, next){
     });
 });
 
+// POST new album
 router.post('/add', upload.single('cover'), function(req, res, next){
     if (req.file) {
         console.log("Uploading file...");
@@ -82,7 +83,7 @@ router.post('/add', upload.single('cover'), function(req, res, next){
     res.redirect('/albums');
 });
 
-//
+// DETAILS:
 router.get('/details/:id', function(req, res){
     var id = req.params.id;
     console.log("-----> id = " + id);
@@ -91,13 +92,74 @@ router.get('/details/:id', function(req, res){
     console.log("albumRef = " + albumRef);
 
     albumRef.once('value', function(snapshot){
-
         var album = snapshot.val();
         res.render('albums/details', {album: album, id: id});
     });
 });
 
+// EDIT album:
+router.get('/edit/:id', function(req, res, next){
+    var id = req.params.id;
+    // get reference to a specific genre:
+    var albumRef = new Firebase('https://recordz.firebaseio.com/albums/' + id);
 
+    var genreRef = fbRef.child('genres');
+
+    genreRef.once('value', function(snapshot){
+        var genres = [];
+
+        snapshot.forEach(function(childSnapshot){
+            var myKey = childSnapshot.key(); // for ID
+            var childData = childSnapshot.val(); // for name
+
+            genres.push({
+                id: myKey,
+                name: childData.name
+            });
+        });
+
+        albumRef.once('value', function(snapshot){
+            var album = snapshot.val();
+            res.render('albums/edit', {album: album, id: id, genres, genres});
+        });
+    });
+});
+
+// EDIT album:
+router.post('/edit/:id', upload.single('cover'), function(req, res, next){
+    var id = req.params.id;
+    // get reference to a specific album:
+    var albumRef = new Firebase('https://recordz.firebaseio.com/albums/' + id);
+
+    if (req.file) {
+        var cover = req.file.filename; // update cover
+
+        albumRef.update({
+            title: req.body.title,
+            artist: req.body.artist,
+            genre: req.body.genre,
+            info: req.body.info,
+            year: req.body.year,
+            label: req.body.label,
+            tracks: req.body.tracks,
+            cover: cover
+        });
+    } else {
+        // update with NO cover
+        albumRef.update({
+            title: req.body.title,
+            artist: req.body.artist,
+            genre: req.body.genre,
+            info: req.body.info,
+            year: req.body.year,
+            label: req.body.label,
+            tracks: req.body.tracks
+        });
+    }
+
+    req.flash('success_msg', 'Album Updated!');
+    res.redirect('/albums/details/' + id);
+});
 
 
 
