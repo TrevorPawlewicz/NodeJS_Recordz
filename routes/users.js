@@ -67,9 +67,55 @@ router.post('/register', function(req, res, next){
             }
         });
     }
-
 }); //-------------------------------------------------------------------------
 
+// LOGiN page:
+router.post('/login', function(req, res, next){
+    // values from register.ejs (name field of input tags):
+    var email       = req.body.email;
+    var password    = req.body.password;
+
+    // Validation:
+    req.checkBody('email', 'Email is required!').notEmpty();
+    req.checkBody('email', 'Email is not valid!').isEmail();
+    req.checkBody('password', 'Password is required!').notEmpty();
+
+    var errors = req.validationErrors();
+
+    console.log("ERRORS:");
+    console.log(errors);
+
+    if (errors) {
+        res.render('users/login', { errors: errors });
+    } else {
+        fbRef.authWithPassword({
+            email: email,
+            password: password
+        }, function(err, authData){
+            if (err) {
+                console.log("Login failed...", err);
+
+                req.flash('error_msg', 'Login Failed.');
+                res.redirect('/users/login');
+
+            } else {
+                console.log("Authenticated user with uid: ", authData);
+
+                req.flash('success_msg', 'You are now logged in!');
+                res.redirect('/albums');
+            }
+        });
+    }
+}); //-------------------------------------------------------------------------
+
+// LOGOUT user:
+router.get('/logout', function(){
+
+    fbRef.unauth(); // firebase unAuthentication
+
+    req.flash('success_msg', 'You are logged out!');
+    res.redirect('/users/login');
+});
 
 
 
