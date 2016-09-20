@@ -21,14 +21,14 @@ router.get('/', function(req, res, next){
         });
         res.render('genres/index.ejs', {genres: myGenre});
     });
-});
+}); //------------------------------------------------------------------------
 
 // Add page:
 router.get('/add', function(req, res, next){
     res.render('genres/add.ejs');
-});
+}); //------------------------------------------------------------------------
 
-//
+// POST genre
 router.post('/add', function(req, res, next){
     var genre = {
         name: req.body.name
@@ -39,7 +39,7 @@ router.post('/add', function(req, res, next){
 
     req.flash('success_msg', 'Genre Saved!');
     res.redirect('/genres');
-});
+}); //------------------------------------------------------------------------
 
 // EDIT genre:
 router.get('/edit/:id', function(req, res, next){
@@ -51,10 +51,11 @@ router.get('/edit/:id', function(req, res, next){
         var genre = snapshot.val();
         res.render('genres/edit', {genre: genre, id: id});
     });
-});
+}); //------------------------------------------------------------------------
 
 // UPDATE genre:
 router.post('/edit/:id', function(req, res, next){
+    console.log("--------EDIT-----------------");
     var id = req.params.id;
     var name = req.body.name;
     var genreRef = new Firebase('https://recordz.firebaseio.com/genres/' + id);
@@ -64,9 +65,18 @@ router.post('/edit/:id', function(req, res, next){
     });
 
     res.redirect('/genres');
-});
+}); //------------------------------------------------------------------------
 
+// DELETE genre:
+router.delete('/delete/:id', function(req, res, next){
+    var id = req.params.id;
+    var genreRef = new Firebase('https://recordz.firebaseio.com/genres/' + id);
 
+    genreRef.remove();
+
+    req.flash('success_msg', 'Genre Deleted!');
+    res.send(200);
+}); //------------------------------------------------------------------------
 
 
 

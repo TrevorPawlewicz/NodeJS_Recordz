@@ -8,6 +8,7 @@
         <form action="/genres/edit/<%= id %>" method="POST">
             <div class="form-group">
                 <label>Name</label>
+                <!-- name="name" is passed to genres.js -->
                 <input type="text" class="form-control" name="name"
                        value="<%= genre.name %>" placeholder="Genre Name">
             </div>

@@ -3,7 +3,7 @@ var router   = express.Router();
 var Firebase = require('firebase');
 var fbRef    = new Firebase('https://recordz.firebaseio.com');
 var multer   = require('multer');
-var upload   = multer({dest:'./public/images/uploads'});
+var upload   = multer({ dest: './public/images/uploads' });
 
 // Home page:
 router.get('/', function(req, res, next){
@@ -29,7 +29,7 @@ router.get('/', function(req, res, next){
         });
         res.render('albums/index.ejs', {albums: myAlbum});
     });
-});
+}); //------------------------------------------------------------------------
 
 router.get('/add', function(req, res, next){
     var genreRef = fbRef.child('genres');
@@ -51,7 +51,7 @@ router.get('/add', function(req, res, next){
         });
         res.render('albums/add', {genres: myData});
     });
-});
+}); //------------------------------------------------------------------------
 
 // POST new album
 router.post('/add', upload.single('cover'), function(req, res, next){
@@ -81,7 +81,7 @@ router.post('/add', upload.single('cover'), function(req, res, next){
 
     req.flash('success_msg', 'Album Saved!');
     res.redirect('/albums');
-});
+}); //------------------------------------------------------------------------
 
 // DETAILS:
 router.get('/details/:id', function(req, res){
@@ -95,7 +95,7 @@ router.get('/details/:id', function(req, res){
         var album = snapshot.val();
         res.render('albums/details', {album: album, id: id});
     });
-});
+}); //------------------------------------------------------------------------
 
 // EDIT album:
 router.get('/edit/:id', function(req, res, next){
@@ -123,7 +123,7 @@ router.get('/edit/:id', function(req, res, next){
             res.render('albums/edit', {album: album, id: id, genres, genres});
         });
     });
-});
+}); //------------------------------------------------------------------------
 
 // EDIT album:
 router.post('/edit/:id', upload.single('cover'), function(req, res, next){
@@ -159,7 +159,7 @@ router.post('/edit/:id', upload.single('cover'), function(req, res, next){
 
     req.flash('success_msg', 'Album Updated!');
     res.redirect('/albums/details/' + id);
-});
+}); //------------------------------------------------------------------------
 
 
 
