@@ -55,7 +55,7 @@ router.get('/edit/:id', function(req, res, next){
 
 // UPDATE genre:
 router.post('/edit/:id', function(req, res, next){
-    console.log("--------EDIT-----------------");
+    console.log("-----------EDIT Gengre-----------------");
     var id = req.params.id;
     var name = req.body.name;
     var genreRef = new Firebase('https://recordz.firebaseio.com/genres/' + id);
@@ -69,13 +69,14 @@ router.post('/edit/:id', function(req, res, next){
 
 // DELETE genre:
 router.delete('/delete/:id', function(req, res, next){
+    console.log("------------DELETE Genre-----------------");
     var id = req.params.id;
     var genreRef = new Firebase('https://recordz.firebaseio.com/genres/' + id);
 
     genreRef.remove();
 
     req.flash('success_msg', 'Genre Deleted!');
-    res.send(200);
+    res.sendStatus(200);
 }); //------------------------------------------------------------------------
 
 

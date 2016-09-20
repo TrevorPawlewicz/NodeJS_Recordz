@@ -31,6 +31,7 @@ router.get('/', function(req, res, next){
     });
 }); //------------------------------------------------------------------------
 
+//
 router.get('/add', function(req, res, next){
     var genreRef = fbRef.child('genres');
 
@@ -161,6 +162,17 @@ router.post('/edit/:id', upload.single('cover'), function(req, res, next){
     res.redirect('/albums/details/' + id);
 }); //------------------------------------------------------------------------
 
+// DELETE album:
+router.delete('/delete/:id', function(req, res, next){
+    console.log("------------DELETE Album-----------------");
+    var id = req.params.id;
+    var albumRef = new Firebase('https://recordz.firebaseio.com/albums/' + id);
+
+    albumRef.remove();
+
+    req.flash('success_msg', 'Album Deleted!');
+    res.sendStatus(200);
+}); //------------------------------------------------------------------------
 
 
 
