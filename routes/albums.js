@@ -68,7 +68,7 @@ router.post('/add', upload.single('cover'), function(req, res, next){
         var cover = req.file.filename;
     } else {
         console.log("No File Uploaded...");
-        var cover = 'no-image.jpg'; // self created image
+        var cover = '/images/apple-logo.jpg'; // self created image
     }
 
     var album = {

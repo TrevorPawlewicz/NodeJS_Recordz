@@ -36,19 +36,21 @@
 
         <div class="container">
             <% if (authdata == null) { %>
+
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 splash-screen">
                         <% if (page == '/') { %>
-                            <a><img src="/images/banner.jpg"></a>
+                            <a><img src="/images/apple-logo.jpg"></a>
                         <% } %>
                     </div>
                 </div>
+
             <% } else { %>
 
                 <div class="row">
                     <div class="col-md-3">
                         <% if(authdata != null){ %>
-                          <p class="well">Welcome, <%= user.first_name %> <%= user.last_name %></p>
+                          <p class="well">Welcome, <%= user.first_name %></p>
                         <% } %>
 
                         <ul class="list-group">

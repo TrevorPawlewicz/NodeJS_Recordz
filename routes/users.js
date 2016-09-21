@@ -21,9 +21,9 @@ router.post('/register', function(req, res, next){
     var email       = req.body.email;
     var password    = req.body.password;
     var password2   = req.body.password2;
-    var location    = req.body.location;
-    var fav_genres  = req.body.fav_genres;
-    var fav_artists = req.body.fav_artists;
+    //var location    = req.body.location;
+    //var fav_genres  = req.body.fav_genres;
+    //var fav_artists = req.body.fav_artists;
 
     // Validation:
     req.checkBody('first_name', 'First name is required!').notEmpty();
@@ -53,10 +53,10 @@ router.post('/register', function(req, res, next){
                     uid: userData.uid,
                     email: email,
                     first_name: first_name,
-                    last_name: last_name,
-                    location: location,
-                    fav_genres: fav_genres,
-                    fav_artists: fav_artists
+                    last_name: last_name
+                    //location: location,
+                    //fav_genres: fav_genres,
+                    //fav_artists: fav_artists
                 }
 
                 var userRef = fbRef.child('users');
@@ -84,7 +84,7 @@ router.post('/login', function(req, res, next){
 
     console.log("ERRORS:");
     console.log(errors);
-
+    
     if (errors) {
         res.render('users/login', { errors: errors });
     } else {
@@ -99,17 +99,17 @@ router.post('/login', function(req, res, next){
                 res.redirect('/users/login');
 
             } else {
-                console.log("Authenticated user with uid: ", authData);
+                console.log("Authenticated user with uid: ", authData.uid);
 
                 req.flash('success_msg', 'You are now logged in!');
-                res.redirect('/albums');
+                res.redirect('/albums/index');
             }
         });
     }
 }); //-------------------------------------------------------------------------
 
 // LOGOUT user:
-router.get('/logout', function(){
+router.get('/logout', function(req, res, next){
 
     fbRef.unauth(); // firebase unAuthentication
 

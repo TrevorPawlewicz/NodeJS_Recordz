@@ -1,4 +1,3 @@
-
 .albums img {
     width: 100%;
     border: 2px #fff solid;
@@ -9,6 +8,11 @@
 }
 .albums h4 {
     margin-bottom: 0;
+}
+
+.splash-screen {
+    margin: auto;
+    width: 50%;
 }
 
 footer {
